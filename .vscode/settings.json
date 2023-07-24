@@ -3,6 +3,24 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
-  }
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
+    },
+    "editor.defaultFormatter": "ms-python.black-formatter",
+  },
+  "ruff.enable": true,
+  "ruff.organizeImports": true,
+  "ruff.fixAll": true,
+  "ruff.run": "onSave",
+  "ruff.codeAction.fixViolation": {
+    "enable": true,
+  },
+  "python.formatting.provider": "black",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.envFile": "${workspaceFolder}/.env",
+  "python.linting.pydocstyleEnabled": false,
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true
 }

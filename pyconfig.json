@@ -1,0 +1,16 @@
+{
+  "packages": ["open-rarity"],
+  "interpreters": [
+    {
+      "lang": "python",
+      "name": "pyodide-0.23.4",
+      "src": "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"
+    }
+  ],
+  "splashscreen": {
+    "enabled": true,
+    "autoclose": true
+  },
+  "terminal": true,
+  "docked": false
+}

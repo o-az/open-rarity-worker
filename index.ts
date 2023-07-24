@@ -1,36 +1,42 @@
-const pythonFile = Bun.file('./index.py')
+import pyConfig from './pyconfig.json'
+const pythonFile = Bun.file('./main.py')
 
-const server = Bun.serve({
-  port: 3031,
-  fetch: async request => {
-    const pythonCode = await pythonFile.text()
-    return new Response(
-      /* html */ `
+export async function handler(_request: Request) {
+  const pythonCode = await pythonFile.text()
+
+  const html = /* html */ `
     <!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Open Rarity</title>
-      <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&display=swap');
+        * { font-family: 'IBM Plex Mono' !important; color: #fff; }
+        body { background: #000; padding: 10px; }
+      </style>
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
       <link rel="stylesheet" href="https://unpkg.com/@picocss/pico/css/pico.min.css" />
-      <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+      <link rel="stylesheet" href="https://unpkg.com/normalize.css/normalize.css">
+      <script defer src="https://pyscript.net/latest/pyscript.js"></script>
     </head>
-    <body style="padding: 10px;">
+    <body>
+      <py-config type="json">
+        ${JSON.stringify(pyConfig)}
+      </py-config>
       <py-script>
         ${pythonCode}
       </py-script>
-      request headers: <pre>${JSON.stringify(request.headers.toJSON(), undefined, 2)}</pre>
+      <py-terminal />
     </body>
     </html>
-    `,
-      {
-        headers: {
-          'content-type': 'text/html'
-        }
-      }
-    )
-  }
-})
+    `
+  return new Response(html, {
+    headers: { 'Content-Type': 'text/html' }
+  })
+}
 
-console.log(`Listening on http://0.0.0.0:${server.port}`)
+const serve = Bun.serve({ port: 3031, fetch: handler })
+
+console.log(`Serving at http://0.0.0.0:${serve.port}`)
